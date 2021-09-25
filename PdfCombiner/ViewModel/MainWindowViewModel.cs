@@ -9,14 +9,19 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using Ghostscript.NET;
+using Ghostscript.NET.Rasterizer;
+using ImageMagick;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Win32;
+using PostSharp.Patterns.Diagnostics;
 using PostSharp.Patterns.Model;
 using Syncfusion.Windows.PdfViewer;
 using ZFile;
 using DelegateCommand = Syncfusion.Windows.Shared.DelegateCommand;
 using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
 namespace PdfCombiner.ViewModel
@@ -26,11 +31,108 @@ namespace PdfCombiner.ViewModel
     {
         public MainWindowViewModel()
         {
+            FilesToMix = 18;
+            //DirectoryInfo d = new DirectoryInfo(@"C:\Users\Admin\Desktop\pddd\IMAGE");
+            //d.GetFiles("*.jpg").ToList().ForEach(f => SelectedFiles.Add(f.FullName));
             InitCommand();
+        }
+
+        public async Task StartExport(string output)
+        {
+            var spacing = 10;
+            var width = 18 * 72;
+            var height = 12 * 72;
+
+            var iw = width / 6 - spacing;
+            var ih = height / 3 - spacing;
+
+            int ySpacing = spacing, xSpacing = spacing;
+
+            await Task.Run(() =>
+            {
+                MainWindow.Main.Dispatcher.Invoke(() =>
+                {
+                    AllowAll = false;
+                    ProgressBarVisibility = Visibility.Visible;
+                    Progress = 0;
+                });
+
+                var pgSize = new Rectangle(width, height);
+                var doc = new Document(pgSize, 0, 0, 0, 0);
+
+                if (File.Exists(output))
+                    File.Delete(output);
+
+                PdfWriter.GetInstance(doc, new FileStream(output, FileMode.OpenOrCreate));
+
+                doc.Open();
+
+                int x = 0, y = 1, count = 0;
+
+                SelectedFiles.ToList().ForEach(f =>
+                {
+                    var fileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".png");
+
+                    ExportFile(f, fileName);
+
+                    var di = Image.GetInstance(fileName);
+                    di.ScaleAbsolute(ih, iw);
+
+                    di.SetAbsolutePosition(x * iw + xSpacing, doc.Top - (ih * y) - ySpacing);
+
+                    di.Rotation = RotateLeft ? 1.5708f : -1.5708f;
+
+                    count++;
+
+                    x++;
+                    xSpacing += spacing;
+                    if (count % 6 == 0)
+                    {
+                        x = 0;
+                        xSpacing = spacing;
+                        y++;
+                        ySpacing += spacing;
+                    }
+
+                    doc.Add(di);
+
+                    Progress++;
+                });
+
+                doc.Close();
+
+                OutputFile = output;
+                AllowAll = true;
+                ProgressBarVisibility = Visibility.Collapsed;
+                MessageBox.Show("File Exported!", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+            });
+        }
+
+        private void ExportFile(string pdf, string output)
+        {
+            var settings = new MagickReadSettings();
+            // Settings the density to 300 dpi will create an image with a better quality
+            settings.Density = new Density(500, 500);
+
+            using (var images = new MagickImageCollection())
+            {
+                // Add all the pages of the pdf file to the collection
+                images.Read(pdf, settings);
+
+                var page = 1;
+                foreach (var image in images)
+                {
+                    // Write page to file that contains the page number
+                    image.Write(output);
+                    page++;
+                    break;
+                }
+            }
         }
 
         #region Props
 
+        public bool RotateLeft { get; set; } = true;
         public string FolderName { get; set; }
         public int FilesToMix { get; set; } = 5;
         public ObservableCollection<string> SelectedFiles { get; set; } = new ObservableCollection<string>();
@@ -52,16 +154,37 @@ namespace PdfCombiner.ViewModel
         {
             SelectFileCommand = new DelegateCommand(o =>
             {
-                var fs = new FolderSelectDialog();
-
-                if (fs.ShowDialog())
+                var fs = new System.Windows.Forms.OpenFileDialog
                 {
-                    FolderName = fs.FileName;
+                    //Filter = "PDF Files (*.pdf)|*.pdf;",
+                    Multiselect = true
+                };
+
+                if (fs.ShowDialog() == DialogResult.OK)
+                {
+                    SelectedFiles.Clear();
+                    fs.FileNames.ToList().ForEach(SelectedFiles.Add);
                 }
             });
 
             ExportCommand = new DelegateCommand(async o =>
             {
+                if (SelectedFiles.Count != 18)
+                {
+                    MessageBox.Show("Please Select 18 Files!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                using (var sf = new SaveFileDialog())
+                {
+                    sf.Filter = "PDF Files (*.pdf)|*.pdf;";
+                    if (sf.ShowDialog() == DialogResult.OK)
+                    {
+                        await StartExport(sf.FileName);
+                    }
+                }
+
+                return;
                 if (Directory.Exists(FolderName))
                 {
                     using (var s = new SaveFileDialog())
@@ -110,8 +233,10 @@ namespace PdfCombiner.ViewModel
                     return;
                 }
 
+
                 // step 3: we open the document
                 document.Open();
+
 
                 foreach (string fileName in fileNames)
                 {

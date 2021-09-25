@@ -23,9 +23,12 @@ namespace PdfCombiner
     /// </summary>
     public partial class MainWindow : ChromelessWindow
     {
+        public static MainWindow Main;
         public MainWindow()
         {
+            Main = this;
             InitializeComponent();
+
         }
 
         private void HideVerticalToolbar(PdfViewerControl pdfViewer)

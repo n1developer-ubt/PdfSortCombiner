@@ -26,25 +26,26 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MaxWidth="200"/>
+            <ColumnDefinition Width="Auto" MinWidth="200" MaxWidth="200"/>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <syncfusion:SfTextInputLayout Margin="0,0,10,0" Hint="Number of File to Combine">
-            <syncfusion:IntegerTextBox Value="{Binding FilesToMix}"/>
-        </syncfusion:SfTextInputLayout>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center">Rotate</TextBlock>
+            <RadioButton IsChecked="{Binding RotateLeft}" Content="Left" Margin="5,0,0,0"/>
+            <RadioButton Content="Right" Margin="5,0,0,0"/>
+        </StackPanel>
 
-        <syncfusion:SfTextInputLayout Grid.Row="0" Grid.Column="1" Hint="Folder Path Containing PDF Files">
-            <TextBox Text="{Binding FolderName}"/>
-        </syncfusion:SfTextInputLayout>
+        <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10">
 
-        <syncfusion:ButtonAdv IsEnabled="{Binding GeneratingPdf}" Grid.Row="0" Label="Select Folder" IconHeight="0" 
-                              IconWidth="0" Command="{Binding SelectFileCommand}" Grid.Column="2" Margin="10,0,0,20"/>
+            <syncfusion:ButtonAdv  Margin="0,0,10,0"  IsEnabled="{Binding AllowAll}"  Label="Select Files" IconHeight="0" 
+                                   IconWidth="0" Command="{Binding SelectFileCommand}"  />
 
-        <syncfusion:ButtonAdv IsEnabled="{Binding GeneratingPdf}" Grid.Row="0" Label="Export" IconHeight="0" 
-                              IconWidth="0" Command="{Binding ExportCommand}" Grid.Column="3" Margin="10,0,0,20"/>
+            <syncfusion:ButtonAdv IsEnabled="{Binding AllowAll}"  Label="Export" IconHeight="0" 
+                                  IconWidth="0" Command="{Binding ExportCommand}" />
+        </StackPanel>
 
         <ListView Grid.RowSpan="2" Margin="0,0,10,0" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding SelectedFiles}">
             <ListView.ItemTemplate>
