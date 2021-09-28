@@ -29,11 +29,14 @@ namespace PdfCombiner.ViewModel
     [NotifyPropertyChanged]
     public class MainWindowViewModel
     {
+        private bool isTest = false;
         public MainWindowViewModel()
         {
             FilesToMix = 18;
             //DirectoryInfo d = new DirectoryInfo(@"C:\Users\Admin\Desktop\pddd\IMAGE");
             //d.GetFiles("*.jpg").ToList().ForEach(f => SelectedFiles.Add(f.FullName));
+            //isTest = true;
+
             InitCommand();
         }
 
@@ -43,10 +46,12 @@ namespace PdfCombiner.ViewModel
             var width = 18 * 72;
             var height = 12 * 72;
 
-            var iw = width / 6 - spacing;
-            var ih = height / 3 - spacing;
+            var iw = width / 6.0 - spacing;
+            var ih = height / 3.0 - spacing;
 
-            int ySpacing = spacing, xSpacing = spacing;
+            var margin = 0.45f;
+
+            float ySpacing = spacing / 2.0f - 0.2f, xSpacing = spacing / 2.0f - margin;
 
             await Task.Run(() =>
             {
@@ -71,14 +76,18 @@ namespace PdfCombiner.ViewModel
 
                 SelectedFiles.ToList().ForEach(f =>
                 {
-                    var fileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".png");
+                    var fileName = isTest ? f : Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".png");
 
-                    ExportFile(f, fileName);
+                    if (!isTest)
+                        ExportFile(f, fileName);
+
 
                     var di = Image.GetInstance(fileName);
-                    di.ScaleAbsolute(ih, iw);
+                    di.ScaleAbsolute((float)ih, (float)iw);
 
-                    di.SetAbsolutePosition(x * iw + xSpacing, doc.Top - (ih * y) - ySpacing);
+                    var xx = x * iw + xSpacing;
+
+                    di.SetAbsolutePosition((float)xx, (float)(doc.Top - (ih * y) - ySpacing));
 
                     di.Rotation = RotateLeft ? 1.5708f : -1.5708f;
 
@@ -89,7 +98,7 @@ namespace PdfCombiner.ViewModel
                     if (count % 6 == 0)
                     {
                         x = 0;
-                        xSpacing = spacing;
+                        xSpacing = spacing / 2.0f - margin;
                         y++;
                         ySpacing += spacing;
                     }
@@ -175,12 +184,19 @@ namespace PdfCombiner.ViewModel
                     return;
                 }
 
-                using (var sf = new SaveFileDialog())
+                if (isTest)
                 {
-                    sf.Filter = "PDF Files (*.pdf)|*.pdf;";
-                    if (sf.ShowDialog() == DialogResult.OK)
+                    await StartExport("export.pdf");
+                }
+                else
+                {
+                    using (var sf = new SaveFileDialog())
                     {
-                        await StartExport(sf.FileName);
+                        sf.Filter = "PDF Files (*.pdf)|*.pdf;";
+                        if (sf.ShowDialog() == DialogResult.OK)
+                        {
+                            await StartExport(sf.FileName);
+                        }
                     }
                 }
 
