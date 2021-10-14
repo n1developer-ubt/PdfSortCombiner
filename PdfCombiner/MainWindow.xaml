@@ -32,10 +32,20 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Horizontal">
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <TextBlock VerticalAlignment="Center">Rotate</TextBlock>
-            <RadioButton IsChecked="{Binding RotateLeft}" Content="Left" Margin="5,0,0,0"/>
-            <RadioButton Content="Right" Margin="5,0,0,0"/>
+            <RadioButton VerticalAlignment="Center" IsChecked="{Binding RotateLeft}" Content="Left" Margin="5,0,0,0"/>
+            <RadioButton VerticalAlignment="Center" Content="Right" Margin="5,0,0,0"/>
+
+            <syncfusion:SfTextInputLayout  HelperTextVisibility="Hidden" VerticalAlignment="Center"  Width="100" Margin="10,5,5,5" Hint="Left Margin">
+                <syncfusion:IntegerTextBox Value="{Binding LeftMargin}"/>
+            </syncfusion:SfTextInputLayout>
+            <syncfusion:SfTextInputLayout HelperTextVisibility="Hidden" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="100" Margin="5" Hint="Top Margin" >
+                <syncfusion:IntegerTextBox Value="{Binding TopMargin}"/>
+            </syncfusion:SfTextInputLayout>
+            <syncfusion:SfTextInputLayout HelperTextVisibility="Hidden" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="100" Margin="5" Hint="Spacing" >
+                <syncfusion:IntegerTextBox Value="{Binding Spacing}"/>
+            </syncfusion:SfTextInputLayout>
         </StackPanel>
 
         <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10">

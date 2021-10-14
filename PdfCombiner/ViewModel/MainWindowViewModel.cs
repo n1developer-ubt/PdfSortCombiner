@@ -30,6 +30,9 @@ namespace PdfCombiner.ViewModel
     public class MainWindowViewModel
     {
         private bool isTest = false;
+        public int LeftMargin { get; set; }
+        public int TopMargin { get; set; }
+        public int Spacing { get; set; } = 10;
         public MainWindowViewModel()
         {
             FilesToMix = 18;
@@ -42,7 +45,7 @@ namespace PdfCombiner.ViewModel
 
         public async Task StartExport(string output)
         {
-            var spacing = 10;
+            var spacing = Spacing;
             var width = 18 * 72;
             var height = 12 * 72;
 
@@ -85,9 +88,9 @@ namespace PdfCombiner.ViewModel
                     var di = Image.GetInstance(fileName);
                     di.ScaleAbsolute((float)ih, (float)iw);
 
-                    var xx = x * iw + xSpacing;
+                    var xx = x * iw + xSpacing + LeftMargin;
 
-                    di.SetAbsolutePosition((float)xx, (float)(doc.Top - (ih * y) - ySpacing));
+                    di.SetAbsolutePosition((float)xx, (float)(doc.Top - (ih * y) - ySpacing - TopMargin));
 
                     di.Rotation = RotateLeft ? 1.5708f : -1.5708f;
 
@@ -110,6 +113,7 @@ namespace PdfCombiner.ViewModel
 
                 doc.Close();
 
+                OutputFile = null;
                 OutputFile = output;
                 AllowAll = true;
                 ProgressBarVisibility = Visibility.Collapsed;
