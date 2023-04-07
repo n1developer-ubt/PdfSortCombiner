@@ -1,72 +1,80 @@
-﻿<syncfusion:ChromelessWindow x:Class="PdfCombiner.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PdfCombiner"
-        mc:Ignorable="d"
-        xmlns:syncfusionskin="[syncfusionskin ]clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-        WindowStartupLocation="CenterScreen"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        xmlns:viewModel="clr-namespace:PdfCombiner.ViewModel"
-        xmlns:extension="clr-namespace:PdfCombiner.Extension"
-        xmlns:pdfViewer="clr-namespace:Syncfusion.Windows.PdfViewer;assembly=Syncfusion.PdfViewer.WPF"
-        syncfusion:SfSkinManager.VisualStyle="FluentLight"
-        Title="PDF Combiner" Height="629.147" Width="1002.606" Icon="logo.jpeg">
+﻿<syncfusion:ChromelessWindow
+    x:Class="PdfCombiner.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extension="clr-namespace:PdfCombiner.Extension"
+    xmlns:local="clr-namespace:PdfCombiner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pdfViewer="clr-namespace:Syncfusion.Windows.PdfViewer;assembly=Syncfusion.PdfViewer.WPF"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:syncfusionskin="[syncfusionskin ]clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+    xmlns:viewModel="clr-namespace:PdfCombiner.ViewModel"
+    Title="PDF Combiner"
+    Width="1002.606"
+    Height="629.147"
+    syncfusion:SfSkinManager.VisualStyle="FluentLight"
+                             Icon="/CC ConsCoach Original Groß.png"
+                             WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
 
     <syncfusion:ChromelessWindow.DataContext>
-        <viewModel:MainWindowViewModel/>
+        <viewModel:MainWindowViewModel />
     </syncfusion:ChromelessWindow.DataContext>
 
-    <Grid  Margin="20">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="200" MaxWidth="200"/>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <TextBlock VerticalAlignment="Center">Rotate</TextBlock>
-            <RadioButton VerticalAlignment="Center" IsChecked="{Binding RotateLeft}" Content="Left" Margin="5,0,0,0"/>
-            <RadioButton VerticalAlignment="Center" Content="Right" Margin="5,0,0,0"/>
+            <TextBox
+                Height="25"
+                IsReadOnly="True"
+                Text="{Binding SelectedFolder}" />
+            <StackPanel
+                Grid.Column="1"
+                Margin="10"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
 
-            <syncfusion:SfTextInputLayout  HelperTextVisibility="Hidden" VerticalAlignment="Center"  Width="100" Margin="10,5,5,5" Hint="Left Margin">
-                <syncfusion:IntegerTextBox Value="{Binding LeftMargin}"/>
-            </syncfusion:SfTextInputLayout>
-            <syncfusion:SfTextInputLayout HelperTextVisibility="Hidden" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="100" Margin="5" Hint="Top Margin" >
-                <syncfusion:IntegerTextBox Value="{Binding TopMargin}"/>
-            </syncfusion:SfTextInputLayout>
-            <syncfusion:SfTextInputLayout HelperTextVisibility="Hidden" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="100" Margin="5" Hint="Spacing" >
-                <syncfusion:IntegerTextBox Value="{Binding Spacing}"/>
-            </syncfusion:SfTextInputLayout>
-        </StackPanel>
+                <syncfusion:ButtonAdv
+                    Margin="0,0,10,0"
+                    Command="{Binding SelectDirectoryCommand}"
+                    IconHeight="0"
+                    IconWidth="0"
+                    IsEnabled="{Binding AllowAll}"
+                    Label="Select Directory" />
 
-        <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10">
+                <syncfusion:ButtonAdv
+                    Command="{Binding ExportCommand}"
+                    IconHeight="0"
+                    IconWidth="0"
+                    IsEnabled="{Binding AllowAll}"
+                    Label="Combine" />
+            </StackPanel>
+        </Grid>
 
-            <syncfusion:ButtonAdv  Margin="0,0,10,0"  IsEnabled="{Binding AllowAll}"  Label="Select Files" IconHeight="0" 
-                                   IconWidth="0" Command="{Binding SelectFileCommand}"  />
 
-            <syncfusion:ButtonAdv IsEnabled="{Binding AllowAll}"  Label="Export" IconHeight="0" 
-                                  IconWidth="0" Command="{Binding ExportCommand}" />
-        </StackPanel>
+        <pdfViewer:PdfViewerControl
+            Grid.Row="1"
+            ItemSource="{Binding OutputFile}"
+            ShowToolbar="False"
+            ShowVerticalScrollBar="False" />
 
-        <ListView Grid.RowSpan="2" Margin="0,0,10,0" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding SelectedFiles}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding .}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <pdfViewer:PdfViewerControl Grid.Column="1"  Grid.ColumnSpan="3" Grid.Row="1" Margin="0,0,10,0" ShowVerticalScrollBar="False" ShowToolbar="False" ItemSource="{Binding OutputFile}" />
-
-        <ProgressBar VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" Visibility="{Binding ProgressBarVisibility}" Grid.ColumnSpan="3" Value="{Binding Progress}" Minimum="0" Maximum="{Binding FilesToMix}" />
+        <ProgressBar
+            Grid.Row="2"
+            VerticalAlignment="Bottom"
+            Maximum="{Binding FilesToMix}"
+            Minimum="0"
+            Visibility="{Binding ProgressBarVisibility}"
+            Value="{Binding Progress}" />
     </Grid>
 </syncfusion:ChromelessWindow>
