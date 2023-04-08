@@ -105,6 +105,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_56669BF46BAF46AFB9A47C7DB83C3185"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6E281300C941787398702016F1DC27AE"
         "OwnerKey" = "8:_9D1D5E994181413D981CAE24A8E3F08D"
         "MsmSig" = "8:_UNDEFINED"
@@ -256,12 +262,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_013886DBDC4A84BB116558363BD16D0A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9D1D5E994181413D981CAE24A8E3F08D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -373,6 +373,12 @@
         "OwnerKey" = "8:_7394435916CC743531EADEB10F14C439"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_013886DBDC4A84BB116558363BD16D0A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -391,6 +397,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -407,6 +421,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -682,6 +704,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_56669BF46BAF46AFB9A47C7DB83C3185"
+            {
+            "SourcePath" = "8:..\\PdfCombiner\\bin\\Release\\Pdfium\\x86\\pdfium.dll"
+            "TargetName" = "8:pdfium.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_6264D6352ADF4F4DB6FA783216BF8E4B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6E281300C941787398702016F1DC27AE"
@@ -1072,6 +1114,28 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3CE6364A2B8A461F8C31D2732233F13A"
+                    {
+                    "Name" = "8:Pdfium"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_E139DD6E49754048A1059006F0803DC4"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_6264D6352ADF4F4DB6FA783216BF8E4B"
+                            {
+                            "Name" = "8:x86"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_6C6C9D4EC6EB4BF0ABB6A4FAEB35EB35"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_92AFBF4E3BD34446A115D92197594C04"
@@ -1100,24 +1164,24 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Setup"
-        "ProductCode" = "8:{F45BC2B6-CBC2-4E2A-8AC4-397130E42055}"
-        "PackageCode" = "8:{1960A23F-5B46-4835-9E43-D51E172A5D1A}"
+        "ProductName" = "8:PDF Combiner"
+        "ProductCode" = "8:{A89866CD-F0C1-427C-8D5C-E4E6EEAD2CBA}"
+        "PackageCode" = "8:{2CA92CB9-22F4-4F9B-B86B-1DDFBE107FFA}"
         "UpgradeCode" = "8:{B84F6D74-1C47-488D-A869-DA7FC4D2A8AC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Usama"
+        "ProductVersion" = "8:1.0.2"
+        "Manufacturer" = "8:N1developer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Setup"
+        "Title" = "8:PDF Combiner"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Usama"
+        "ARPCONTACT" = "8:N1developer"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
+        "ARPCOMMENTS" = "8:PDF Combiner"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"

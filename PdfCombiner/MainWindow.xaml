@@ -14,67 +14,76 @@
     Width="1002.606"
     Height="629.147"
     syncfusion:SfSkinManager.VisualStyle="FluentLight"
-                             Icon="/CC ConsCoach Original Groß.png"
-                             WindowStartupLocation="CenterScreen"
+    Icon="/CC ConsCoach Original Groß.png"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <syncfusion:ChromelessWindow.DataContext>
         <viewModel:MainWindowViewModel />
     </syncfusion:ChromelessWindow.DataContext>
 
-    <Grid Margin="20">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Image Width="100" Source="/CC ConsCoach Original Groß.png" />
 
-            <TextBox
-                Height="25"
-                IsReadOnly="True"
-                Text="{Binding SelectedFolder}" />
-            <StackPanel
-                Grid.Column="1"
-                Margin="10"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
+        <Grid Grid.Row="1" Margin="20,0,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                <syncfusion:ButtonAdv
-                    Margin="0,0,10,0"
-                    Command="{Binding SelectDirectoryCommand}"
-                    IconHeight="0"
-                    IconWidth="0"
-                    IsEnabled="{Binding AllowAll}"
-                    Label="Select Directory" />
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <syncfusion:ButtonAdv
-                    Command="{Binding ExportCommand}"
-                    IconHeight="0"
-                    IconWidth="0"
-                    IsEnabled="{Binding AllowAll}"
-                    Label="Combine" />
-            </StackPanel>
+                <TextBox
+                    Height="25"
+                    IsReadOnly="True"
+                    Text="{Binding SelectedFolder}" />
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+
+                    <syncfusion:ButtonAdv
+                        Margin="0,0,10,0"
+                        Command="{Binding SelectDirectoryCommand}"
+                        IconHeight="0"
+                        IconWidth="0"
+                        IsEnabled="{Binding AllowAll}"
+                        Label="Select Directory" />
+
+                    <syncfusion:ButtonAdv
+                        Command="{Binding ExportCommand}"
+                        IconHeight="0"
+                        IconWidth="0"
+                        IsEnabled="{Binding AllowAll}"
+                        Label="Combine" />
+                </StackPanel>
+            </Grid>
+
+
+            <pdfViewer:PdfViewerControl
+                Grid.Row="1"
+                ItemSource="{Binding OutputFile}"
+                ShowToolbar="False"
+                ShowVerticalScrollBar="False" />
+
+            <ProgressBar
+                Grid.Row="2"
+                VerticalAlignment="Bottom"
+                Maximum="{Binding FilesToMix}"
+                Minimum="0"
+                Visibility="{Binding ProgressBarVisibility}"
+                Value="{Binding Progress}" />
         </Grid>
-
-
-        <pdfViewer:PdfViewerControl
-            Grid.Row="1"
-            ItemSource="{Binding OutputFile}"
-            ShowToolbar="False"
-            ShowVerticalScrollBar="False" />
-
-        <ProgressBar
-            Grid.Row="2"
-            VerticalAlignment="Bottom"
-            Maximum="{Binding FilesToMix}"
-            Minimum="0"
-            Visibility="{Binding ProgressBarVisibility}"
-            Value="{Binding Progress}" />
     </Grid>
 </syncfusion:ChromelessWindow>
